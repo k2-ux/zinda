@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, FlatList, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, FlatList, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
+const{height,width} = Dimensions.get('screen' )
 const Welcome = () => {
   const navigation = useNavigation();
 
@@ -42,13 +42,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 16,
+    // backgroundColor:'yellow'
   },
   itemContainer: {
+    flex:1,
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
-    width: '100%',
+    width: width*0.9,
     alignItems: 'center',
+    backgroundColor:'#DBEFBC',
+    marginBottom:5,
+    height:height/8,
+    borderRadius:10,
+    // elevation:10,
+    justifyContent:'center'
   },
   itemText: {
     fontSize: 18,
