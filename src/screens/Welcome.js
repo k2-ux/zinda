@@ -11,9 +11,12 @@ import {useNavigation} from '@react-navigation/native';
 const {height, width} = Dimensions.get('screen');
 import {SvgXml} from 'react-native-svg';
 import {xml} from '../components/svg.js';
-const Welcome = () => {
-  const navigation = useNavigation();
+import {useDarkModeContext} from '../state/DarkModeContext.js';
 
+const Welcome = () => {
+  var {darkMode} = useDarkModeContext();
+
+  const navigation = useNavigation();
   const screens = [
     {name: 'Carousel', component: 'Anime Carousel'},
     {name: 'Switch', component: 'Change theme'},
@@ -27,15 +30,27 @@ const Welcome = () => {
 
   const renderItem = ({item}) => (
     <TouchableOpacity
-      style={styles.itemContainer}
+      style={[
+        styles.itemContainer,
+        {backgroundColor: darkMode ? 'black' : '#DBEFBC'},
+      ]}
       onPress={() => navigation.navigate(item.name)}>
-      <Text style={styles.itemText}>{item.component}</Text>
+      <Text style={[styles.itemText, {color: darkMode ? 'white' : 'black'}]}>
+        {item.component}
+      </Text>
     </TouchableOpacity>
   );
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
+      <View
+        style={[
+          styles.header,
+          {
+            borderBottomColor: darkMode ? 'white' : 'black',
+            backgroundColor: darkMode ? 'black' : '#71B48D',
+          },
+        ]}>
         <SvgXml xml={xml} width={50} height={50} style={{borderRadius: 10}} />
         <Text style={styles.headerText}>
           Welcome! Take a look at the items below
@@ -64,9 +79,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     marginBottom: 20,
     borderBottomWidth: 1,
-    borderBottomColor: 'black',
     height: height * 0.1,
-    backgroundColor: '#71B48D',
+
     elevation: 30,
     paddingHorizontal: 5,
   },
@@ -83,7 +97,6 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ccc',
     width: width * 0.9,
     alignItems: 'center',
-    backgroundColor: '#DBEFBC',
     marginBottom: 5,
     height: height / 8,
     borderRadius: 10,

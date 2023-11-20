@@ -6,14 +6,16 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
+import { useDarkModeContext } from '../state/DarkModeContext';
 const AnimatedSwitch = () => {
-  const animation = useSharedValue(0);
+  const {updateDarkMode,darkMode} = useDarkModeContext()
+  const animation = useSharedValue(darkMode?150:0);
   const animatedStyle = useAnimatedStyle(() => {
     return {
       transform: [{translateX: animation.value}],
     };
   });
-  const [isDay, setIsDay] = useState(true);
+  const [isDay, setIsDay] = useState(darkMode?false:true);
   return (
     <View
       style={{
@@ -22,16 +24,16 @@ const AnimatedSwitch = () => {
         justifyContent: 'center',
         backgroundColor: isDay ? 'white' : 'black',
       }}>
-      {/* {isDay &&     <Text
+      {!darkMode &&     <Text
         style={{
           color: 'black',
           fontSize: 35,
           fontWeight: 'bold',
           marginBottom: 40,
         }}>
-        দিনে শ্বশুর
+        It is day mode!
       </Text>}
-      {!isDay &&
+      {darkMode &&
       <Text 
         style={{
           color: 'white',
@@ -39,9 +41,9 @@ const AnimatedSwitch = () => {
           fontWeight: 'bold',
           marginBottom: 40,
         }}>
-        রাতে অসুর
+        it is night mode!
       </Text>
-      } */}
+      }
       <TouchableOpacity
         style={{
           width: 200,
@@ -58,9 +60,11 @@ const AnimatedSwitch = () => {
           if (animation.value == 0) {
             animation.value = withTiming(150, {duration: 500});
             setIsDay(false);
+            updateDarkMode(true)
           } else {
             animation.value = withTiming(0, {duration: 500});
             setIsDay(true);
+            updateDarkMode(null)
           }
         }}>
         <Animated.View
